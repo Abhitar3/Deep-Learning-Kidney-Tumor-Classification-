@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: cnnclassifier
+Version: 0.0.0
+Summary: A small package for CNN based classifier
+Home-page: https://github.com/Abhitar3/Deep-Learning-Kidney-Tumor-Classification-
+Author: Abhitar3
+Author-email: abhitar@udel.edu
+Project-URL: Bug Tracker, https://github.com/Abhitar3/Deep-Learning-Kidney-Tumor-Classification-/issues
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: project-url
+Dynamic: summary
