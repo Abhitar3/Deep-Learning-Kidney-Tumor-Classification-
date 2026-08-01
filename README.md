@@ -1,4 +1,29 @@
-# Deep-Learning-Kidney-Tumor-Classification
+# Kidney Tumor Classification using Deep Learning
+
+## Project Overview
+This project focuses on classifying kidney CT scan images using a deep learning model. The goal is to build an end-to-end image classification pipeline with model training, evaluation, experiment tracking, and deployment support.
+
+## Tech Stack
+- Python
+- TensorFlow / Keras
+- MLflow
+- DVC
+- Flask
+- NumPy
+- Pandas
+- Matplotlib
+- Seaborn
+
+## Project Workflow
+1. Data ingestion
+2. Data preprocessing
+3. Model training
+4. Model evaluation
+5. Experiment tracking with MLflow
+6. Pipeline tracking with DVC
+7. Web app deployment using Flask
+
+## How to Run
 
 ## How to run?
 
