@@ -1,7 +1,12 @@
+import os
+from pathlib import Path
+
 from cnnclassifier.constants import *
 from cnnclassifier.utils.common import read_yaml, create_directories
 from cnnclassifier.entity.config_entity import DataIngestionConfig
 from cnnclassifier.entity.config_entity import prepareBaseModelConfig
+from cnnclassifier.entity.config_entity import TrainingConfig
+
 
 class configuartionManager:
     def __init__(self, config_file_path = config_file_path, params_file_path = params_file_path):
@@ -41,3 +46,21 @@ class configuartionManager:
                 params_classes=params.CLASSES
             )
             return prepare_base_model_config
+    def get_training_config(self) -> TrainingConfig:
+            training_config = self.config.training
+            prepare_base_model= self.config.prepare_base_model
+            params = self.params
+            training_data = os.path.join(self.config.data_ingestion.unzip_dir,"KidneyData")
+    
+            
+            training_config = TrainingConfig(
+                root_dir=Path(training_config.root_dir),
+                trained_model_path=Path(training_config.trained_model_path),
+                updated_base_model_path=Path(prepare_base_model.updated_base_model_path),
+                training_data=Path(training_data),
+                params_epochs=params.EPOCHS,
+                params_batch_size=params.BATCH_SIZE,
+                params_is_augmentation=params.AUGMENTATION,
+                params_image_size=params.IMAGE_SIZE
+            )
+            return training_config
