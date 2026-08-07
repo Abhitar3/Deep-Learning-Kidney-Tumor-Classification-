@@ -1,0 +1,70 @@
+stages:
+  data_ingestion:
+    cmd: python src/cnnclassifier/pipeline/stage1_data_ingestion.py
+    deps:
+      - src/cnnclassifier/pipeline/stage1_data_ingestion.py
+      - src/cnnclassifier/components/data_ingestion.py
+      - src/cnnclassifier/config/configuration.py
+      - src/cnnclassifier/entity/config_entity.py
+      - src/cnnclassifier/utils/common.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion/kidney-city-scan-data.zip
+      - artifacts/data_ingestion/unzip/KidneyData
+
+  prepare_base_model:
+    cmd: python src/cnnclassifier/pipeline/stage2_prepare_base_model.py
+    deps:
+      - src/cnnclassifier/pipeline/stage2_prepare_base_model.py
+      - src/cnnclassifier/components/prepare_base_model.py
+      - src/cnnclassifier/config/configuration.py
+      - src/cnnclassifier/entity/config_entity.py
+      - src/cnnclassifier/utils/common.py
+      - config/config.yaml
+    params:
+      - IMAGE_SIZE
+      - INCLUDE_TOP
+      - CLASSES
+      - WEIGHTS
+      - LEARNING_RATE
+    outs:
+      - artifacts/prepare_base_model/base_model.h5
+      - artifacts/prepare_base_model/updated_base_model.h5
+
+  training:
+    cmd: python src/cnnclassifier/pipeline/stage3_model_training.py
+    deps:
+      - src/cnnclassifier/pipeline/stage3_model_training.py
+      - src/cnnclassifier/components/model_training.py
+      - src/cnnclassifier/config/configuration.py
+      - src/cnnclassifier/entity/config_entity.py
+      - src/cnnclassifier/utils/common.py
+      - artifacts/data_ingestion/unzip/KidneyData
+      - artifacts/prepare_base_model/updated_base_model.h5
+      - config/config.yaml
+    params:
+      - AUGMENTATION
+      - IMAGE_SIZE
+      - BATCH_SIZE
+      - EPOCHS
+      - LEARNING_RATE
+    outs:
+      - artifacts/training/trained_model.h5
+
+  evaluation:
+    cmd: python src/cnnclassifier/pipeline/stage4_model_evaluation.py
+    deps:
+      - src/cnnclassifier/pipeline/stage4_model_evaluation.py
+      - src/cnnclassifier/components/model_evaluation.py
+      - src/cnnclassifier/config/configuration.py
+      - src/cnnclassifier/entity/config_entity.py
+      - src/cnnclassifier/utils/common.py
+      - artifacts/data_ingestion/unzip/KidneyData
+      - artifacts/training/trained_model.h5
+      - config/config.yaml
+    params:
+      - IMAGE_SIZE
+      - BATCH_SIZE
+    metrics:
+      - scores.json:
+          cache: false
