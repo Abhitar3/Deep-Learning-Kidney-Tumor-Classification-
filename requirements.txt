@@ -2,6 +2,7 @@ tensorflow
 pandas
 dvc
 mlflow
+dagshub
 notebook
 numpy
 matplotlib

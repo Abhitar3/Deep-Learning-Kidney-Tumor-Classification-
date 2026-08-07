@@ -2,10 +2,11 @@ import os
 from pathlib import Path
 
 from cnnclassifier.constants import *
-from cnnclassifier.utils.common import read_yaml, create_directories
+from cnnclassifier.utils.common import read_yaml, create_directories, save_json
 from cnnclassifier.entity.config_entity import DataIngestionConfig
 from cnnclassifier.entity.config_entity import prepareBaseModelConfig
 from cnnclassifier.entity.config_entity import TrainingConfig
+from cnnclassifier.entity.config_entity import EvaluationConfig
 
 
 class configuartionManager:
@@ -64,3 +65,15 @@ class configuartionManager:
                 params_image_size=params.IMAGE_SIZE
             )
             return training_config
+
+    def get_evaluation_config(self) -> EvaluationConfig:
+            eval_config = EvaluationConfig(
+                path_of_model=Path("artifacts/training/trained_model.h5"),
+                training_data=Path("artifacts/data_ingestion/unzip/KidneyData"),
+                mlflow_uri="https://dagshub.com/Abhitar3/Deep-Learning-Kidney-Tumor-Classification-.mlflow",
+                all_params=self.params,
+                params_image_size=self.params.IMAGE_SIZE,
+                params_batch_size=self.params.BATCH_SIZE
+            )
+    
+            return eval_config
