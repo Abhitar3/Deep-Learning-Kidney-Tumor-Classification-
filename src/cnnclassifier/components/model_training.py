@@ -61,15 +61,13 @@ class Training:
             shuffle=True,
             **dataflow_kwargs
         )
+        logger.info(f"Class indices: {self.train_generator.class_indices}")
 
     @staticmethod
     def save_model(path: Path, model: tf.keras.Model):
         model.save(path)
 
     def train(self):
-        self.steps_per_epoch = self.train_generator.samples // self.train_generator.batch_size
-        self.validation_steps = self.valid_generator.samples // self.valid_generator.batch_size
-
         self.model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
             loss="categorical_crossentropy",
@@ -79,8 +77,6 @@ class Training:
         self.model.fit(
             self.train_generator,
             epochs=self.config.params_epochs,
-            steps_per_epoch=self.steps_per_epoch,
-            validation_steps=self.validation_steps,
             validation_data=self.valid_generator
         )
 
